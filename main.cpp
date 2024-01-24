@@ -1,8 +1,7 @@
-#include "src/headers/Helper.h"
-#include "Game.h"
+#include "src/headers/Game.h"
 
 int main() {
-    Game game;
+    Game game(1); /** Initialize game object to prepare board */
 
-    return game.run();
+    return game.run(); /** Run whole game */
 }

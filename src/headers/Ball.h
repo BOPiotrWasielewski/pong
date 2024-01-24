@@ -8,28 +8,27 @@
 #include <windows.h>
 #include <cstdlib>
 #include <ctime>
-#include "src/headers/Helper.h"
+#include "Helper.h"
 
 class Ball {
 private:
-    int x = 1; // Current Horizontal position of game ball
-    int y = 10; // Current Vertical position of game ball
-    int oldX = x; // Old Horizontal position of game ball
-    int oldY = y; // Old Vertical position of game ball
-    int modifier = 0; // Modification value for moving ball object
-    Helper::Axis axis = Helper::Axis::BottomRight; // Current axis of rotation for moving ball object
+    int x = 1; /** Current Horizontal position of game ball */
+    int y = 10; /** Current Vertical position of game ball */
+    int oldX = x; /** Old Horizontal position of game ball */
+    int oldY = y; /** Old Vertical position of game ball */
+    int modifier = 0; /** Modification value for moving ball object */
+    Helper::Axis axis = Helper::Axis::BottomRight; /** Current axis of rotation for moving ball object */
 public:
     /**
      * Constructor of Ball class to create ball object with specific startup params
-     * @param posX // Horizontal position of object
-     * @param posY // Vertical position of object
-     * @param axis // Axis of rotation of object
+     * @param posX - Horizontal position of object
+     * @param posY - Vertical position of object
+     * @param axis - Axis of rotation of object
      */
     Ball(int posX, int posY, Helper::Axis axis);
 
     /**
      * Method for rendering and cleaning object on game screen
-     * @param hConsole - required for rendering object with specific color on game screen
      */
     void render() const;
 

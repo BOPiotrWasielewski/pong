@@ -5,9 +5,6 @@
 #ifndef PONG_HELPER_H
 #define PONG_HELPER_H
 
-#define KEY_UP 72       //Up arrow character
-#define KEY_DOWN 80    //Down arrow character
-
 #include <vector>
 #include <string>
 #include <windows.h>
@@ -48,14 +45,21 @@ public:
      * Structure for calculating and rendering in-game timer
      */
     struct GameTime{
-        int minutes = 0;
-        int seconds = 0;
+        int minutes = 0; /** in-game minutes value */
+        int seconds = 0; /** in-game seconds value */
         void calculate(){
-            if(this->seconds % 60 == 0){
-                if(this->minutes == 99) return;
-                this->minutes = this->seconds / 60;
+            if(this->seconds % 60 == 0){ /** Calculate seconds into minutes */
+                if(this->minutes == 99){ /** Check if time exceed 99 minutes and stop counting */
+                    this->seconds = 0;
+                    return;
+                }
+                this->minutes = this->seconds / 60; /** Calculate seconds into minutes */
                 this->seconds = 0;
             }
+        }
+        void clearTime(){ /** Clear in-game time */
+            this->minutes = 0;
+            this->seconds = 0;
         }
     };
 
@@ -65,7 +69,7 @@ public:
      * @param y - Vertical position of cursor
      */
     static void gotoXY(int x, int y) {
-        printf("%c[%d;%df", 0x1B, y, x); // Change position of cursor
+        printf("%c[%d;%df", 0x1B, y, x); /** Change position of cursor */
     }
 
     /**
@@ -76,15 +80,15 @@ public:
     static WORD parseColor(Color color){
         switch (color) {
             case Color::WHITE:
-                return FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE; // Returns white text with white background
+                return FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE; /** Returns white text with white background */
             case Color::RED:
-                return FOREGROUND_RED | BACKGROUND_RED; // Returns red text with red background
+                return FOREGROUND_RED | BACKGROUND_RED; /** Returns red text with red background */
             case Color::GREEN:
-                return FOREGROUND_GREEN | BACKGROUND_GREEN; // Returns green text with green background
+                return FOREGROUND_GREEN | BACKGROUND_GREEN; /** Returns green text with green background */
             case Color::BLACK:
-                return BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE; // Return black text on white background
+                return BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE; /** Return black text on white background */
             default:
-                return 7; // Reset terminal color value to default one
+                return 7; /** Reset terminal color value to default one */
         }
     }
 
@@ -132,8 +136,19 @@ public:
      * @param color - Color enumeration value
      */
     static void changeColor(Color color = Color::DEFAULT){
-        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleTextAttribute(hConsole, parseColor(color));
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); /** Handle terminal output to prepare for changing terminal colors */
+        SetConsoleTextAttribute(hConsole, parseColor(color)); /** Changes in terminal color cursor */
+    }
+
+    /**
+     * Method to hide cursor on terminal
+     */
+    static void hideCursor(){
+        HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE); /** Handle terminal output to prepare for hiding terminal cursor */
+        CONSOLE_CURSOR_INFO cursorInfo; /** Create terminal cursor handle */
+        GetConsoleCursorInfo(out, &cursorInfo); /** Get terminal cursor data */
+        cursorInfo.bVisible = false; /** Set cursor visibility to hidden */
+        SetConsoleCursorInfo(out, &cursorInfo); /** Override terminal cursor data */
     }
 };
 
