@@ -143,6 +143,7 @@ void Game::checkPosition() {
         case Helper::Axis::TopRight:
             if (ball.GetPositionY() <= 2) { /** Check if ball touched top border */
                 ball.setAxis(Helper::Axis::BottomRight); /** Change axis on border touch */
+                ball.setModifier(0); /** Reset ball movement modifier */
                 return checkPosition(); /** Recalculate ball object position */
             } else if (ball.GetPositionX() >= (this->screen.getWidth() - this->player_1.GetWidth() - 3) &&
                        ball.GetPositionY() >= this->player_1.GetPositionY() &&
@@ -153,6 +154,7 @@ void Game::checkPosition() {
             } else if (ball.GetPositionX() >= this->screen.getWidth()) { /** Check if ball touched right border */
                 this->player_2.IncreaseScore(); /** Increase player 2 score points on border touch */
                 ball.setAxis(Helper::Axis::TopLeft); /** Change axis on border touch */
+                ball.setModifier(0); /** Reset ball movement modifier */
                 return checkPosition(); /** Recalculate ball object position */
             }
             ball.setPosition(ball.GetPositionX() + 3, ball.GetPositionY() - 1); /** Update ball position on screen */
@@ -160,6 +162,7 @@ void Game::checkPosition() {
         case Helper::Axis::BottomRight:
             if (ball.GetPositionY() >= this->screen.getHeight() - 1) {
                 ball.setAxis(Helper::Axis::TopRight); /** Change axis on border touch */
+                ball.setModifier(0); /** Reset ball movement modifier */
                 return checkPosition(); /** Recalculate ball object position */
             } else if (ball.GetPositionX() >= (this->screen.getWidth() - this->player_1.GetWidth() - 3) &&
                        ball.GetPositionY() >= this->player_1.GetPositionY() &&
@@ -170,6 +173,7 @@ void Game::checkPosition() {
             } else if (ball.GetPositionX() >= this->screen.getWidth()) { /** Check if ball touched right border */
                 this->player_2.IncreaseScore(); /** Increase player 2 score points on border touch */
                 ball.setAxis(Helper::Axis::BottomLeft); /** Change axis on border touch */
+                ball.setModifier(0); /** Reset ball movement modifier */
                 return checkPosition(); /** Recalculate ball object position */
             }
             ball.setPosition(ball.GetPositionX() + 3, ball.GetPositionY() + 1); /** Update ball position on screen */
@@ -177,6 +181,7 @@ void Game::checkPosition() {
         case Helper::Axis::BottomLeft:
             if (ball.GetPositionY() >= this->screen.getHeight() - 1) {
                 ball.setAxis(Helper::Axis::TopLeft); /** Change axis on border touch */
+                ball.setModifier(0); /** Reset ball movement modifier */
                 return checkPosition(); /** Recalculate ball object position */
             } else if (ball.GetPositionX() <= 5 &&
                        ball.GetPositionY() >= this->player_2.GetPositionY() &&
@@ -187,6 +192,7 @@ void Game::checkPosition() {
             } else if (ball.GetPositionX() <= 1) { /** Check if ball touched left border */
                 this->player_1.IncreaseScore(); /** Increase player 1 score points on border touch */
                 ball.setAxis(Helper::Axis::BottomRight); /** Change axis on border touch */
+                ball.setModifier(0); /** Reset ball movement modifier */
                 return checkPosition(); /** Recalculate ball object position */
             }
             ball.setPosition(ball.GetPositionX() - 3, ball.GetPositionY() + 1); /** Update ball position on screen */
@@ -194,6 +200,7 @@ void Game::checkPosition() {
         case Helper::Axis::TopLeft:
             if (ball.GetPositionY() <= 2) { /** Check if ball touched top border */
                 ball.setAxis(Helper::Axis::BottomLeft); /** Change axis on border touch */
+                ball.setModifier(0); /** Reset ball movement modifier */
                 return checkPosition(); /** Recalculate ball object position */
             } else if (ball.GetPositionX() <= 5 &&
                        ball.GetPositionY() >= this->player_2.GetPositionY() &&
@@ -204,6 +211,7 @@ void Game::checkPosition() {
             } else if (ball.GetPositionX() <= 1) { /** Check if ball touched left border */
                 this->player_1.IncreaseScore(); /** Increase player 1 score points on border touch */
                 ball.setAxis(Helper::Axis::TopRight); /** Change axis on border touch */
+                ball.setModifier(0); /** Reset ball movement modifier */
                 return checkPosition(); /** Recalculate ball object position */
             }
             ball.setPosition(ball.GetPositionX() - 3, ball.GetPositionY() - 1); /** Update ball position on screen */
@@ -270,7 +278,7 @@ void Game::setWinner(Helper::Winner win) {
 }
 
 void Game::listenForRestart() {
-    if (GetAsyncKeyState(VK_SPACE)) { /** Check if user pressed SPACE key on keyboard */
+    if (GetAsyncKeyState(VK_RETURN)) { /** Check if user pressed ENTER key on keyboard */
         this->force_restart = true; /** Set restart flag */
         this->hasWinner = false; /** Reset winner game param */
         this->is_running = true; /** Reset game loop */
